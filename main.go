@@ -9,12 +9,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/docopt/docopt-go"
-	"strings"
 )
 
 const ver = "fetchem 0.1.0"
@@ -49,12 +50,19 @@ Options:
 		fmt.Printf("Error fetching url: %s\n", err.Error())
 		os.Exit(-1)
 	}
+	defer resp.Body.Close()
 
 	if !strings.Contains(resp.Status, "200 OK") {
 		fmt.Printf("Page was not found, return code: %s\n", resp.Status)
 		os.Exit(-1)
 	}
 
-	fmt.Printf("Status: %s, Proto: %s, ContentLength: %d\n%b\n", resp.Status, resp.Proto, resp.ContentLength, resp.Body)
+	fmt.Printf("Status: %s, Proto: %s, ContentLength: %d\n", resp.Status, resp.Proto, resp.ContentLength)
+
+	s := bufio.NewScanner(bufio.NewReader(resp.Body))
+	for s.Scan() {
+		fmt.Printf("%s\n", s.Text())
+	}
+
 	os.Exit(0)
 }
