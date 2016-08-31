@@ -10,6 +10,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/docopt/docopt-go"
@@ -35,18 +36,19 @@ Options:
 		fmt.Printf("An error has occurred trying to parse the cli options: %s\n", err.Error())
 	}
 
-	nothing, test := args["iDoNotExist"]
-	fmt.Printf("Val: %s, test: %t\n", nothing, test)
+	url := args["<url>"].(string)
 
-	getUrl := args["<url>"]
-	if getUrl == nil {
+	output := args["--out"]
+	if output != nil {
+		fmt.Printf("Content of --out: %s\n", output)
+	}
+
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Printf("Error fetching url: %s\n", err.Error())
 		os.Exit(-1)
 	}
 
-	fmt.Printf("Fetch stuff from url: %s\n", getUrl)
-
-	buh := args["--out"]
-	if buh != nil {
-		fmt.Printf("Content of --out: %s\n", buh)
-	}
+	fmt.Printf("Status: %s, Proto: %s, ContentLength: %d\n%b\n", resp.Status, resp.Proto, resp.ContentLength, resp.Body)
+	os.Exit(0)
 }
