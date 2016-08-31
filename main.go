@@ -25,7 +25,7 @@ func main() {
 
 Usage:
   fetchem <url>
-  fetchem <url> [--out=<output>]
+  fetchem <url> [--type="<filetype>"]
   fetchem -h | --help | --version
 
 Options:
@@ -40,9 +40,11 @@ Options:
 
 	url := args["<url>"].(string)
 
-	output := args["--out"]
-	if output != nil {
-		fmt.Printf("Content of --out: %s\n", output)
+	var fity string
+	tmp := args["--type"]
+	if tmp != nil {
+		fity = tmp.(string)
+		fmt.Printf("Content of --type: %s\n", tmp)
 	}
 
 	resp, err := http.Get(url)
@@ -61,7 +63,11 @@ Options:
 
 	s := bufio.NewScanner(bufio.NewReader(resp.Body))
 	for s.Scan() {
-		fmt.Printf("%s\n", s.Text())
+		if fity == "" {
+			fmt.Printf("%s\n", s.Text())
+		} else if strings.Contains(s.Text(), fity) {
+			fmt.Printf("%s\n", s.Text())
+		}
 	}
 
 	os.Exit(0)
