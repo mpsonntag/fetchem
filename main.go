@@ -14,6 +14,7 @@ import (
 	"os"
 
 	"github.com/docopt/docopt-go"
+	"strings"
 )
 
 const ver = "fetchem 0.1.0"
@@ -46,6 +47,11 @@ Options:
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("Error fetching url: %s\n", err.Error())
+		os.Exit(-1)
+	}
+
+	if !strings.Contains(resp.Status, "200 OK") {
+		fmt.Printf("Page was not found, return code: %s\n", resp.Status)
 		os.Exit(-1)
 	}
 
