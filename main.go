@@ -109,3 +109,17 @@ Options:
 
 	os.Exit(0)
 }
+
+// findRegexp finds all occurrences that match a regular expression in a string
+// and prints each match, if it does not already exist in a second check string.
+// The check string is updated with new occurrences and returned.
+func findRegexp(exp *regexp.Regexp, text string, checkExists string) string {
+	match := exp.FindAllString(text, -1)
+	for _, val := range match {
+		if !strings.Contains(checkExists, val) {
+			fmt.Println(val)
+			checkExists = checkExists + val
+		}
+	}
+	return checkExists
+}
