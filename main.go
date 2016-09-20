@@ -73,9 +73,7 @@ Options:
 	var checkExists string
 	s := bufio.NewScanner(bufio.NewReader(resp.Body))
 	for s.Scan() {
-		if len(fity) == 0 {
-			fmt.Printf("%s\n", s.Text())
-		} else {
+		if len(fity) > 0 {
 			for _, v := range fity {
 				exp := `[a-zA-Z\d./\\_+-]*`+ v
 				re := regexp.MustCompile(exp)
@@ -87,6 +85,11 @@ Options:
 					}
 				}
 			}
+		} else if fileReg != "" {
+			fmt.Printf("Parse regular expression: '%s'\n", fileReg)
+
+		} else {
+			fmt.Printf("%s\n", s.Text())
 		}
 	}
 
