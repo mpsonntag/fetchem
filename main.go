@@ -25,15 +25,16 @@ func main() {
 	usage := `fetchem
 
 Usage:
-  fetchem (<url>) [-t <filetype>...]
+  fetchem (<url>) [-t <filetype>... | -r <fileRegExp>]
   fetchem -h | --help | --version
 
 Options:
   <url>               url to fetch or from where to download, required option.
-  -t <filetype>...    Specify which files to download, more than one option can be selected.
+  -t <filetype>...    Specify which files to fetch, more than one option can be selected.
                           e.g. -t "png" -t "jpg"
                       If this option is not used, the code of the specified url will be printed
                       onto the screen.
+  -r <fileRegExp>     For more fine grained specification of which files to fetch.
   -h  --help          Show this screen.
   --version           Show version.
 `
