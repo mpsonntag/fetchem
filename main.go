@@ -39,6 +39,13 @@ Options:
   --version           Show version.
 `
 
+	// examples:
+	// go run main.go https://web.archive.org/web/20150320093805/http://lovecraftismissing.com/?p=8539 -t png -t jpg
+	// go run main.go https://web.archive.org/web/20150320093805/http://lovecraftismissing.com/?p=8549 -r "(/web){1}(.)*/[0-9_+-]*.jpg"
+	// go run main.go http://static.nichtlustig.de/toondb/150421.html -t png -t jpg
+	// go run main.go http://static.nichtlustig.de/toondb/150421.html -r
+	// go run main.go http://static.nichtlustig.de/toondb/150421.html -r "(//static){1}[0-9a-zA-Z._+-/:]*(/st/){1}[0-9a-zA-Z._+-/:]*.png"
+
 	args, err := docopt.Parse(usage, nil, true, ver, false)
 	if err != nil {
 		fmt.Printf("An error has occurred trying to parse the cli options: %s\n", err.Error())
@@ -52,8 +59,10 @@ Options:
 	}
 
 	var fileReg string
+	var expression *regexp.Regexp
 	if args["-r"] != nil {
 		fileReg = args["-r"].(string)
+		expression = regexp.MustCompile(fileReg)
 	}
 
 	resp, err := http.Get(url)
@@ -86,8 +95,13 @@ Options:
 				}
 			}
 		} else if fileReg != "" {
-			fmt.Printf("Parse regular expression: '%s'\n", fileReg)
-
+			regMatch := expression.FindAllString(s.Text(), -1)
+			for _, val := range regMatch {
+				if !strings.Contains(checkExists, val) {
+					fmt.Println(val)
+					checkExists = checkExists + val
+				}
+			}
 		} else {
 			fmt.Printf("%s\n", s.Text())
 		}
