@@ -86,22 +86,10 @@ Options:
 			for _, v := range fity {
 				exp := `[a-zA-Z\d./\\_+-]*`+ v
 				re := regexp.MustCompile(exp)
-				strsl := re.FindAllString(s.Text(), -1)
-				for _, val := range strsl {
-					if !strings.Contains(checkExists, val) {
-						fmt.Println(val)
-						checkExists = checkExists + val
-					}
-				}
+				checkExists = findRegexp(re, s.Text(), checkExists)
 			}
 		} else if fileReg != "" {
-			regMatch := expression.FindAllString(s.Text(), -1)
-			for _, val := range regMatch {
-				if !strings.Contains(checkExists, val) {
-					fmt.Println(val)
-					checkExists = checkExists + val
-				}
-			}
+			checkExists = findRegexp(expression, s.Text(), checkExists)
 		} else {
 			fmt.Printf("%s\n", s.Text())
 		}
