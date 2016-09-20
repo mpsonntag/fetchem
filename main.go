@@ -24,13 +24,17 @@ func main() {
 	usage := `fetchem
 
 Usage:
-  fetchem <url>
-  fetchem <url> [--type="<filetype>"]
+  fetchem (<url>) [-t <filetype>...]
   fetchem -h | --help | --version
 
 Options:
-  -h  --help       Show this screen.
-  --version        Show version.
+  <url>               url to fetch or from where to download, required option.
+  -t <filetype>...    Specify which files to download, more than one option can be selected.
+                          e.g. -t "png" -t "jpg"
+                      If this option is not used, the code of the specified url will be printed
+                      onto the screen.
+  -h  --help          Show this screen.
+  --version           Show version.
 `
 
 	args, err := docopt.Parse(usage, nil, true, ver, false)
