@@ -16,6 +16,7 @@ import (
 	"strings"
 
 	"github.com/docopt/docopt-go"
+	"regexp"
 )
 
 const ver = "fetchem 0.1.0"
@@ -59,24 +60,23 @@ Options:
 
 	fmt.Printf("Status: %s, Proto: %s, ContentLength: %d\n", resp.Status, resp.Proto, resp.ContentLength)
 
-	var content []string
+	var checkExists string
 	s := bufio.NewScanner(bufio.NewReader(resp.Body))
 	for s.Scan() {
 		if len(fity) == 0 {
 			fmt.Printf("%s\n", s.Text())
 		} else {
 			for _, v := range fity {
-				if strings.Contains(s.Text(), v) {
-					content = append(content, s.Text())
-					break
+				exp := `[a-zA-Z\d./\\_+-]*`+ v
+				re := regexp.MustCompile(exp)
+				strsl := re.FindAllString(s.Text(), -1)
+				for _, val := range strsl {
+					if !strings.Contains(checkExists, val) {
+						fmt.Println(val)
+						checkExists = checkExists + val
+					}
 				}
 			}
-		}
-	}
-
-	if len(content) > 0 {
-		for _, v := range content {
-			fmt.Printf("%s\n", v)
 		}
 	}
 
