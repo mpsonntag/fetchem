@@ -43,13 +43,7 @@ Options:
 	}
 
 	url := args["<url>"].(string)
-
-	var fity string
-	tmp := args["--type"]
-	if tmp != nil {
-		fity = tmp.(string)
-		fmt.Printf("Content of --type: %s\n", tmp)
-	}
+	fity := args["-t"].([]string)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -59,18 +53,30 @@ Options:
 	defer resp.Body.Close()
 
 	if !strings.Contains(resp.Status, "200 OK") {
-		fmt.Printf("Page was not found, return code: %s\n", resp.Status)
+		fmt.Printf("Page for address %s was not found, return code: %s\n", url, resp.Status)
 		os.Exit(-1)
 	}
 
 	fmt.Printf("Status: %s, Proto: %s, ContentLength: %d\n", resp.Status, resp.Proto, resp.ContentLength)
 
+	var content []string
 	s := bufio.NewScanner(bufio.NewReader(resp.Body))
 	for s.Scan() {
-		if fity == "" {
+		if len(fity) == 0 {
 			fmt.Printf("%s\n", s.Text())
-		} else if strings.Contains(s.Text(), fity) {
-			fmt.Printf("%s\n", s.Text())
+		} else {
+			for _, v := range fity {
+				if strings.Contains(s.Text(), v) {
+					content = append(content, s.Text())
+					break
+				}
+			}
+		}
+	}
+
+	if len(content) > 0 {
+		for _, v := range content {
+			fmt.Printf("%s\n", v)
 		}
 	}
 
