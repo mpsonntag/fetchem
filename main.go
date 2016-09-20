@@ -44,7 +44,16 @@ Options:
 	}
 
 	url := args["<url>"].(string)
-	fity := args["-t"].([]string)
+
+	var fity []string
+	if args["-t"] != nil {
+		fity = args["-t"].([]string)
+	}
+
+	var fileReg string
+	if args["-r"] != nil {
+		fileReg = args["-r"].(string)
+	}
 
 	resp, err := http.Get(url)
 	if err != nil {
