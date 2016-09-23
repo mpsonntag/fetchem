@@ -1,4 +1,4 @@
-// Copyright (c) 2016, Michael Sonntag (sonntag@bio.lmu.de)
+// Copyright (c) 2016, Michael Sonntag (michael.p.sonntag@gmail.com)
 //
 // All rights reserved.
 //
