@@ -64,13 +64,13 @@ Options:
 			fmt.Fprintf(os.Stderr, "[Error] decoding url: %s\n", err.Error())
 			os.Exit(-1)
 		}
-		fmt.Printf("Dumbly unescaped string: %s\n", shinyUrl)
+		fmt.Printf("Dumbly unescaped string: \n\n%s\n\n", shinyUrl)
 		os.Exit(0)
 	}
 
 	if enc, ok := args["--encode"]; ok && enc != nil {
 		encUrl := url.QueryEscape(enc.(string))
-		fmt.Printf("Dumbly escaped string: %s\n", encUrl)
+		fmt.Printf("Dumbly escaped string: \n\n%s\n\n", encUrl)
 		os.Exit(0)
 	}
 
