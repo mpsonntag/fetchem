@@ -13,13 +13,13 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/docopt/docopt-go"
-	"regexp"
 )
 
-const ver = "fetchem 0.1.0"
+const ver = "fetchem 0.1.1"
 
 func main() {
 	usage := `fetchem
@@ -38,7 +38,6 @@ Options:
   -h  --help          Show this screen.
   --version           Show version.
 `
-
 	// examples:
 	// go run main.go https://web.archive.org/web/20150320093805/http://lovecraftismissing.com/?p=8539 -t png -t jpg
 	// go run main.go https://web.archive.org/web/20150320093805/http://lovecraftismissing.com/?p=8549 -r "(/web){1}(.)*/[0-9_+-]*.jpg"
@@ -48,7 +47,8 @@ Options:
 
 	args, err := docopt.Parse(usage, nil, true, ver, false)
 	if err != nil {
-		fmt.Printf("An error has occurred trying to parse the cli options: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "An error has occurred trying to parse the cli options: %s\n", err.Error())
+		os.Exit(-1)
 	}
 
 	url := args["<url>"].(string)
