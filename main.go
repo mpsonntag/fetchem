@@ -28,6 +28,7 @@ func main() {
 Usage:
   fetchem (<url>) [-t <filetype>... | -r <fileRegExp>]
   fetchem --decode <url>
+  fetchem --encode <url>
   fetchem -h | --help | --version
 
 Options:
@@ -38,6 +39,8 @@ Options:
                       onto the screen.
   -r <fileRegExp>     For more fine grained specification of which files to fetch.
   --decode <url>      encoded URL, the decoded URL will be printed to the command line.
+                      Alternative command line usage.
+  --encode <url>      plain URL, the encoded URL will be printed to the command line.
                       Alternative command line usage.
   -h  --help          Show this screen.
   --version           Show version.
@@ -62,6 +65,12 @@ Options:
 			os.Exit(-1)
 		}
 		fmt.Printf("Dumbly unescaped string: %s\n", shinyUrl)
+		os.Exit(0)
+	}
+
+	if enc, ok := args["--encode"]; ok && enc != nil {
+		encUrl := url.QueryEscape(enc.(string))
+		fmt.Printf("Dumbly escaped string: %s\n", encUrl)
 		os.Exit(0)
 	}
 
