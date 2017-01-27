@@ -12,6 +12,7 @@ import (
 	"bufio"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -26,6 +27,7 @@ func main() {
 
 Usage:
   fetchem (<url>) [-t <filetype>... | -r <fileRegExp>]
+  fetchem --decode <url>
   fetchem -h | --help | --version
 
 Options:
@@ -35,6 +37,8 @@ Options:
                       If this option is not used, the code of the specified url will be printed
                       onto the screen.
   -r <fileRegExp>     For more fine grained specification of which files to fetch.
+  --decode <url>      encoded URL, the decoded URL will be printed to the command line.
+                      Alternative command line usage.
   -h  --help          Show this screen.
   --version           Show version.
 `
@@ -47,11 +51,21 @@ Options:
 
 	args, err := docopt.Parse(usage, nil, true, ver, false)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "An error has occurred trying to parse the cli options: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "[Error] parsing command line options: %s\n", err.Error())
 		os.Exit(-1)
 	}
 
-	url := args["<url>"].(string)
+	if decode, ok := args["--decode"]; ok && decode != nil {
+		shinyUrl, err := url.QueryUnescape(decode.(string))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "[Error] decoding url: %s\n", err.Error())
+			os.Exit(-1)
+		}
+		fmt.Printf("Dumbly unescaped string: %s\n", shinyUrl)
+		os.Exit(0)
+	}
+
+	fetchThis := args["<url>"].(string)
 
 	var fity []string
 	if args["-t"] != nil {
@@ -65,7 +79,7 @@ Options:
 		expression = regexp.MustCompile(fileReg)
 	}
 
-	resp, err := http.Get(url)
+	resp, err := http.Get(fetchThis)
 	if err != nil {
 		fmt.Printf("Error fetching url: %s\n", err.Error())
 		os.Exit(-1)
@@ -73,7 +87,7 @@ Options:
 	defer resp.Body.Close()
 
 	if !strings.Contains(resp.Status, "200 OK") {
-		fmt.Printf("Page for address %s was not found, return code: %s\n", url, resp.Status)
+		fmt.Printf("Page for address %s was not found, return code: %s\n", fetchThis, resp.Status)
 		os.Exit(-1)
 	}
 
@@ -84,7 +98,7 @@ Options:
 	for s.Scan() {
 		if len(fity) > 0 {
 			for _, v := range fity {
-				exp := `[a-zA-Z\d./\\_+-]*`+ v
+				exp := `[a-zA-Z\d./\\_+-]*` + v
 				re := regexp.MustCompile(exp)
 				checkExists = findRegexp(re, s.Text(), checkExists)
 			}
