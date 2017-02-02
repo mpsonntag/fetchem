@@ -59,12 +59,19 @@ Options:
 	}
 
 	if decode, ok := args["--decode"]; ok && decode != nil {
+		const sep = "http"
 		shinyUrl, err := url.QueryUnescape(decode.(string))
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "[Error] decoding url: %s\n", err.Error())
 			os.Exit(-1)
 		}
-		fmt.Printf("Dumbly unescaped string: \n\n%s\n\n", shinyUrl)
+
+		shinySplit := strings.Split(shinyUrl, sep)
+		for i, v := range shinySplit {
+			if len(v) > 0 {
+				fmt.Printf("\nDumbly unescaped string #%d: \n%s%s\n", i, sep, v)
+			}
+		}
 		os.Exit(0)
 	}
 
