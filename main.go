@@ -48,8 +48,8 @@ func main() {
 
 Usage:
   fetchem (<url>) [-t <filetype>... | -r <fileRegExp>]
-  fetchem --decode <url>
-  fetchem --encode <url>
+  fetchem -d <url>
+  fetchem -e <url>
   fetchem -h | --help | --version
 
 Options:
@@ -59,9 +59,9 @@ Options:
                       If this option is not used, the code of the specified url will be printed
                       onto the screen.
   -r <fileRegExp>     For more fine grained specification of which files to fetch.
-  --decode <url>      encoded URL, the decoded URL will be printed to the command line.
+  -d <url>            Decode encoded URL, the decoded URL will be printed to the command line.
                       Alternative command line usage.
-  --encode <url>      plain URL, the encoded URL will be printed to the command line.
+  -e <url>            Encode plain URL, the encoded URL will be printed to the command line.
                       Alternative command line usage.
   -h  --help          Show this screen.
   --version           Show version.
@@ -79,9 +79,10 @@ Options:
 		os.Exit(-1)
 	}
 
-	if decode, ok := args["--decode"]; ok && decode != nil {
+	//if decode, ok := args["--decode"]; ok && decode != nil {
+	if args["-d"] != nil {
 		const sep = "http"
-		shinyUrl, err := url.QueryUnescape(decode.(string))
+		shinyUrl, err := url.QueryUnescape(args["-d"].(string))
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "[Error] decoding url: %s\n", err.Error())
 			os.Exit(-1)
@@ -96,8 +97,9 @@ Options:
 		os.Exit(0)
 	}
 
-	if enc, ok := args["--encode"]; ok && enc != nil {
-		encUrl := url.QueryEscape(enc.(string))
+	//if enc, ok := args["--encode"]; ok && enc != nil {
+	if args["-e"] != nil {
+		encUrl := url.QueryEscape(args["-e"].(string))
 		fmt.Printf("Dumbly escaped string: \n\n%s\n\n", encUrl)
 		os.Exit(0)
 	}
