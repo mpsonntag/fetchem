@@ -81,18 +81,10 @@ Options:
 
 	//if decode, ok := args["--decode"]; ok && decode != nil {
 	if args["-d"] != nil {
-		const sep = "http"
-		shinyUrl, err := url.QueryUnescape(args["-d"].(string))
+		err = decodeLink(args)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "[Error] decoding url: %s\n", err.Error())
+			fmt.Fprintf(os.Stderr, err.Error())
 			os.Exit(-1)
-		}
-
-		shinySplit := strings.Split(shinyUrl, sep)
-		for i, v := range shinySplit {
-			if len(v) > 0 {
-				fmt.Printf("\nDumbly unescaped string #%d: \n%s%s\n", i, sep, v)
-			}
 		}
 		os.Exit(0)
 	}
