@@ -157,7 +157,8 @@ func findRegexp(exp *regexp.Regexp, text string, checkExists string) string {
 }
 
 // decodeLink splits multiple urlencoded urls from a string, decodes them
-// and prints them to the commandline.
+// and prints them to the commandline. If a supported clipboard handler is
+// available, the second url is copied to the clipboard.
 func decodeLink(args map[string]interface{}) error {
 	const sep = "http"
 	shinyUrl, err := url.QueryUnescape(args["-d"].(string))
