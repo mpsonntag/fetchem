@@ -84,7 +84,7 @@ Options:
 	if args["-d"] != nil {
 		err = decodeLink(args)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, err.Error())
+			fmt.Fprintf(os.Stderr, "\n%s\n\n", err.Error())
 			os.Exit(-1)
 		}
 		os.Exit(0)
