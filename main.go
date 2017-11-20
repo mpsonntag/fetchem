@@ -39,6 +39,7 @@ import (
 	"strings"
 
 	"github.com/docopt/docopt-go"
+	"github.com/atotto/clipboard"
 )
 
 const ver = "fetchem 0.1.1"
@@ -171,6 +172,14 @@ func decodeLink(args map[string]interface{}) error {
 	for i, v := range shinySplit {
 		if len(v) > 0 {
 			fmt.Printf("\nDumbly unescaped string #%d: \n%s%s\n", i, sep, v)
+		}
+
+		// Copy the second occurrence to clipboard
+		if i == 2 {
+			err = clipboard.WriteAll(fmt.Sprintf("%s%s", sep, v))
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
