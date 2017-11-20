@@ -164,3 +164,22 @@ func findRegexp(exp *regexp.Regexp, text string, checkExists string) string {
 	}
 	return checkExists
 }
+
+// decodeLink splits multiple urlencoded urls from a string, decodes them
+// and prints them to the commandline.
+func decodeLink(args map[string]interface{}) error {
+	const sep = "http"
+	shinyUrl, err := url.QueryUnescape(args["-d"].(string))
+	if err != nil {
+		err = fmt.Errorf("[Error] decoding url: %s\n", err.Error())
+		return err
+	}
+
+	shinySplit := strings.Split(shinyUrl, sep)
+	for i, v := range shinySplit {
+		if len(v) > 0 {
+			fmt.Printf("\nDumbly unescaped string #%d: \n%s%s\n", i, sep, v)
+		}
+	}
+	return nil
+}
