@@ -38,8 +38,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/docopt/docopt-go"
 	"github.com/atotto/clipboard"
+	"github.com/docopt/docopt-go"
 )
 
 const ver = "fetchem 0.1.1"
