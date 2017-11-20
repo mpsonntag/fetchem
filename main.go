@@ -80,7 +80,6 @@ Options:
 		os.Exit(-1)
 	}
 
-	//if decode, ok := args["--decode"]; ok && decode != nil {
 	if args["-d"] != nil {
 		err = decodeLink(args)
 		if err != nil {
@@ -90,7 +89,6 @@ Options:
 		os.Exit(0)
 	}
 
-	//if enc, ok := args["--encode"]; ok && enc != nil {
 	if args["-e"] != nil {
 		encUrl := url.QueryEscape(args["-e"].(string))
 		fmt.Printf("Dumbly escaped string: \n\n%s\n\n", encUrl)
