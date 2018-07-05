@@ -90,8 +90,8 @@ Options:
 	}
 
 	if args["-e"] != nil {
-		encUrl := url.QueryEscape(args["-e"].(string))
-		fmt.Printf("Dumbly escaped string: \n\n%s\n\n", encUrl)
+		encURL := url.QueryEscape(args["-e"].(string))
+		fmt.Printf("Dumbly escaped string: \n\n%s\n\n", encURL)
 		os.Exit(0)
 	}
 
@@ -161,13 +161,13 @@ func findRegexp(exp *regexp.Regexp, text string, checkExists string) string {
 // available, the second url is copied to the clipboard.
 func decodeLink(args map[string]interface{}) error {
 	const sep = "http"
-	shinyUrl, err := url.QueryUnescape(args["-d"].(string))
+	shinyURL, err := url.QueryUnescape(args["-d"].(string))
 	if err != nil {
 		err = fmt.Errorf("[Error] decoding url: %s\n", err.Error())
 		return err
 	}
 
-	shinySplit := strings.Split(shinyUrl, sep)
+	shinySplit := strings.Split(shinyURL, sep)
 	for i, v := range shinySplit {
 		if len(v) > 0 {
 			fmt.Printf("\nDumbly unescaped string #%d: \n%s%s\n", i, sep, v)
