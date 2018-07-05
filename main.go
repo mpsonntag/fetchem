@@ -74,7 +74,7 @@ Options:
 	// go run main.go http://static.nichtlustig.de/toondb/150421.html -r
 	// go run main.go http://static.nichtlustig.de/toondb/150421.html -r "(//static){1}[0-9a-zA-Z._+-/:]*(/st/){1}[0-9a-zA-Z._+-/:]*.png"
 
-	args, err := docopt.Parse(usage, nil, true, ver, false)
+	args, err := docopt.ParseArgs(usage, nil, ver)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "[Error] parsing command line options: %s\n", err.Error())
 		os.Exit(-1)
