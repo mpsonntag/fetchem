@@ -18,11 +18,16 @@ jobs:
       - name: Run go vet
         run: go vet ./...
       - name: Run gofmt
-        run: gofmt -s -l .
+        run: |
+          gofmt -s -l .
+          if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then exit 1; fi
       - name: Run golint
         run: |
           go get golang.org/x/lint/golint
           golint ./...
+        # github actions discussion could make warnings like
+        # these visible eventually without failing the build.
+        # Check https://github.com/actions/toolkit/issues/399
         continue-on-error: true
       - name: Run errcheck
         run: |
