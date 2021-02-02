@@ -1,4 +1,5 @@
 ![run-tests](https://github.com/mpsonntag/fetchem/workflows/run-tests/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/mpsonntag/fetchem/badge.svg?branch=master)](https://coveralls.io/github/mpsonntag/fetchem?branch=master)
 
 # Fetchem
 

@@ -195,6 +195,5 @@ func testQAtools() error {
 
 	// multiple empty lines should be caught by gofmt
 
-
 	return err
 }
