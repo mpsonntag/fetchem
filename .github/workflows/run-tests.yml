@@ -22,8 +22,10 @@ jobs:
       - name: Run gofmt
         run: gofmt -s -l .
       - name: Run errcheck
-        run: go get github.com/kisielk/errcheck
-        run: errcheck ./...
+        run: |
+          go get github.com/kisielk/errcheck
+          errcheck ./...
       - name: Run staticcheck
-        run: go get honnef.co/go/tools/cmd/staticcheck
-        run: staticcheck ./...
+        run: |
+          go get honnef.co/go/tools/cmd/staticcheck
+          staticcheck ./...
