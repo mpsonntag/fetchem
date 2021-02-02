@@ -154,6 +154,7 @@ func findRegexp(exp *regexp.Regexp, text string, checkExists string) string {
 			checkExists = checkExists + val
 		}
 	}
+
 	return checkExists
 }
 
@@ -164,7 +165,7 @@ func decodeLink(args map[string]interface{}) error {
 	const sep = "http"
 	shinyURL, err := url.QueryUnescape(args["-d"].(string))
 	if err != nil {
-		err = fmt.Errorf("[Error] decoding url: %s\n", err.Error())
+		err = fmt.Errorf("[error] decoding url: %s", err.Error())
 		return err
 	}
 
@@ -182,5 +183,18 @@ func decodeLink(args map[string]interface{}) error {
 			}
 		}
 	}
+	return nil
+}
+
+func testQAtools() error {
+	// Captialized errors should be caught by golint
+	fmt.Errorf("This is not %s.", "good business")
+
+	// invalid print usage should be caught by go vet
+	fmt.Printf("I say good day")
+
+	// multiple empty lines should be caught by gofmt
+
+
 	return nil
 }
