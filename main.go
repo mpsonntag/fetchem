@@ -188,7 +188,7 @@ func decodeLink(args map[string]interface{}) error {
 
 func testQAtools() error {
 	// Captialized errors should be caught by golint
-	fmt.Errorf("This is not %s.", "good business")
+	err := fmt.Errorf("This is not %s.", "good business")
 
 	// invalid print usage should be caught by go vet
 	fmt.Printf("I say good day")
@@ -196,5 +196,5 @@ func testQAtools() error {
 	// multiple empty lines should be caught by gofmt
 
 
-	return nil
+	return err
 }
