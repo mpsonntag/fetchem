@@ -185,15 +185,3 @@ func decodeLink(args map[string]interface{}) error {
 	}
 	return nil
 }
-
-func testQAtools() error {
-	// Capitalized errors should be caught by golint
-	err := fmt.Errorf("This is not %s.", "good business")
-
-	// invalid print usage should be caught by go vet
-	fmt.Printf("I say good day")
-
-	// multiple empty lines should be caught by gofmt
-
-	return err
-}
