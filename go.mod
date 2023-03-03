@@ -1,6 +1,6 @@
 module github.com/mpsonntag/fetchem
 
-go 1.15
+go 1.20
 
 require (
 	github.com/atotto/clipboard v0.1.2
